@@ -1,1 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.dbName}}-db
+  labels:
+    db: {{.Values.dbName}}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{.Values.dbName}}-db
+  template:
+    metadata:
+      labels:
+        app: {{.Values.dbName}}-db
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: order-app
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
 
