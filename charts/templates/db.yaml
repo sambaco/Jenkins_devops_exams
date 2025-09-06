@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{.Values.dbName}}-db
+  name: {{.Values.db.name}}-db
   labels:
-    db: {{.Values.dbName}}
+    db: {{.Values.db.name}}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{.Values.dbName}}-db
+      app: {{.Values.db.name}}-db
   template:
     metadata:
       labels:
-        app: {{.Values.dbName}}-db
+        app: {{.Values.db.name}}-db
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{.Values.dbName}}-db
+        - name: {{.Values.db.name}}-db
           image: "postgres:12.1-alpine"
           ports:
             - name: http
               containerPort: 5432
               protocol: TCP
           env:
-            - name: DEMO_GREETING
-              value: "Hello from the environment"
-            - name: DEMO_FAREWELL
-              value: "Such a sweet sorrow"
+            - name: POSTGRES_USER
+              value: {{.Values.db.name.user}}
+            - name: POSTGRES_PWD
+              value: {{.Values.db.name.pwd}}
