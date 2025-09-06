@@ -19,10 +19,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: order-app
+        - name: {{.Values.dbName}}-db
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: 5432
               protocol: TCP
 
