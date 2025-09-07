@@ -72,13 +72,12 @@ stage('Deploiement en dev'){
                 script {
                 sh '''
                 rm -Rf .kube
-                mkdir .kube
-                ls
+                mkdir .kube  
                 cat $KUBECONFIG > .kube/config
-                cp fastapi/values.yaml values.yml
-                cat values.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-                helm upgrade --install app fastapi --values=values.yml --namespace dev
+                helm upgrade --install cast-app charts/ --values=cast-service/values.yml --namespace dev --set image.repository="$DOCKER_ID/cast-service:$DOCKER_TAG"
+                helm upgrade --install cast-app charts/ --values=movie-service/values.yml --namespace dev --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
+                helm upgrade --install nginx-app charts/ --values=nginx/values.yml --namespace dev --set image.repository="$DOCKER_ID/nginx-service:$DOCKER_TAG"
+
                 '''
                 }
             }
@@ -94,12 +93,10 @@ stage('Deploiement en staging'){
                 sh '''
                 rm -Rf .kube
                 mkdir .kube
-                ls
                 cat $KUBECONFIG > .kube/config
-                cp fastapi/values.yaml values.yml
-                cat values.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-                helm upgrade --install app fastapi --values=values.yml --namespace staging
+                helm upgrade --install cast-app charts/ --values=cast-service/values.yml --namespace staging --set image.repository="$DOCKER_ID/cast-service:$DOCKER_TAG"
+                helm upgrade --install cast-app charts/ --values=movie-service/values.yml --namespace staging --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
+                helm upgrade --install nginx-app charts/ --values=nginx/values.yml --namespace staging --set image.repository="$DOCKER_ID/nginx-service:$DOCKER_TAG"
                 '''
                 }
             }
@@ -121,12 +118,10 @@ stage('Deploiement en staging'){
                 sh '''
                 rm -Rf .kube
                 mkdir .kube
-                ls
                 cat $KUBECONFIG > .kube/config
-                cp fastapi/values.yaml values.yml
-                cat values.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-                helm upgrade --install app fastapi --values=values.yml --namespace prod
+                helm upgrade --install cast-app charts/ --values=cast-service/values.yml --namespace prod --set image.repository="$DOCKER_ID/cast-service:$DOCKER_TAG"
+                helm upgrade --install cast-app charts/ --values=movie-service/values.yml --namespace prod --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
+                helm upgrade --install nginx-app charts/ --values=nginx/values.yml --namespace prod --set image.repository="$DOCKER_ID/nginx-service:$DOCKER_TAG"
                 '''
                 }
             }
