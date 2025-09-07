@@ -1,1 +1,5 @@
-
+appName: cast
+db:
+  enabled: false
+  user: cast_db_username
+  pwd: cast_db_password
