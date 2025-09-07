@@ -35,7 +35,10 @@ stages {
             steps {
                     script {
                     sh '''
-                    curl localhost:8081
+                    curl --header "Content-Type: application/json" --request POST --data '{"name":"test","nationality":"FR"}' http://localhost:8081/api/login
+
+
+                    
                     curl localhost:8082
                     curl localhost:8083
                     '''
