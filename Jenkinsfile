@@ -36,7 +36,7 @@ stages {
                     script {
                     sh '''
                     curl --header "Content-Type: application/json" --request POST --data '{"name":"test","nationality":"FR"}' http://localhost:8081/
-                    curl localhost:8082
+                    curl --header "Content-Type: application/json" --request POST --data '{"plot":"test","genres":["comedy","action"] ,"casts_id":[1,2,3]}' http://localhost:8082/
                     curl localhost:8083
                     '''
                     }
