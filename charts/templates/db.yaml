@@ -28,9 +28,9 @@ spec:
               protocol: TCP
           env:
             - name: POSTGRES_USER
-              value: {{.Values.db.name.user}}
+              value: {{.Values.db.user}}
             - name: POSTGRES_PWD
-              value: {{.Values.db.name.pwd}}
+              value: {{.Values.db.pwd}}
             - name: POSTGRES_DB
               value: {{.Values.db.name}}-db           
 {{- end}}
