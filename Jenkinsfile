@@ -24,7 +24,7 @@ stages {
                     sh '''
                     docker run -d -p 8081:8000 --name cast-service $DOCKER_ID/cast-service:$DOCKER_TAG
                     docker run -d -p 8082:8000 --name movie-service $DOCKER_ID/movie-service:$DOCKER_TAG
-                    docker run -d -p 8083:8000 --name nginx-service $DOCKER_ID/nginx-service:$DOCKER_TAG
+                    docker run -d -p 8080:8080 --name nginx-service $DOCKER_ID/nginx-service:$DOCKER_TAG
                     sleep 10
                     '''
                     }
@@ -37,7 +37,7 @@ stages {
                     sh '''
                     curl --header "Content-Type: application/json" --request POST --data '{"name":"test","nationality":"FR"}' http://localhost:8081/
                     curl --header "Content-Type: application/json" --request POST --data '{"plot":"test","genres":["comedy","action"] ,"casts_id":[1,2,3]}' http://localhost:8082/
-                    curl localhost:8083
+                    curl localhost:8080
                     '''
                     }
             }
@@ -54,7 +54,9 @@ stages {
                 script {
                 sh '''
                 docker login -u $DOCKER_ID -p $DOCKER_PASS
-                docker push $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
+                docker push $DOCKER_ID/cast-service:$DOCKER_TAG
+                docker push $DOCKER_ID/movie-service:$DOCKER_TAG
+                docker push $DOCKER_ID/nginx-service:$DOCKER_TAG
                 '''
                 }
             }
