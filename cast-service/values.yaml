@@ -1,1 +1,3 @@
 appName: cast
+db:
+  enabled: false
