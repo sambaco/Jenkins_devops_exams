@@ -2,5 +2,5 @@ appName: cast
 db:
   enabled: false
   name:
-    user:
-    pwd:
+  user:
+  pwd:
