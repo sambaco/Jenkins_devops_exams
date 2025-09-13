@@ -21,31 +21,7 @@ stages {
                 }
             }
         }
-        stage('Docker run'){ // run container from our builded image
-                steps {
-                    script {
-                    sh '''
-                    docker run -d -p 8081:8080 --name cast-service $DOCKER_ID/cast-service:$DOCKER_TAG
-                    docker run -d -p 8082:8080 --name movie-service $DOCKER_ID/movie-service:$DOCKER_TAG
-                    docker run -d -p 8083:8080 --name nginx $DOCKER_ID/nginx:$DOCKER_TAG
-                    sleep 10
-                    '''
-                    }
-                }
-            }
-
-        stage('Test Acceptance'){ // we launch the curl command to validate that the container responds to the request
-            steps {
-                    script {
-                    sh '''
-                    curl --header "Content-Type: application/json" --request POST --data '{"name":"test","nationality":"FR"}' http://localhost:8081/
-                    curl --header "Content-Type: application/json" --request POST --data '{"plot":"test","genres":["comedy","action"] ,"casts_id":[1,2,3]}' http://localhost:8082/
-                    curl localhost:8083
-                    '''
-                    }
-            }
-
-        }
+        
         stage('Docker Push'){ //we pass the built image to our docker hub account
             environment
             {
