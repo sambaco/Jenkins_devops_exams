@@ -12,7 +12,7 @@ stages {
                 sh '''
                  docker build -t $DOCKER_ID/cast-service:$DOCKER_TAG ./cast-service
                  docker build -t $DOCKER_ID/movie-service:$DOCKER_TAG ./movie-service
-                 docker build -t $DOCKER_ID/nginx-service:$DOCKER_TAG ./nginx-service
+                 docker build -t $DOCKER_ID/nginx:$DOCKER_TAG ./nginx-service
                 sleep 6
                 '''
                 }
