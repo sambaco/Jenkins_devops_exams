@@ -10,9 +10,9 @@ stages {
             steps {
                 script {
                 sh '''
-                 docker rm cast-service
-                 docker rm movie-service
-                 docker rm nginx
+                 docker rm -f cast-service
+                 docker rm -f movie-service
+                 docker rm -f nginx
                  docker build -t $DOCKER_ID/cast-service:$DOCKER_TAG ./cast-service
                  docker build -t $DOCKER_ID/movie-service:$DOCKER_TAG ./movie-service
                  docker build -t $DOCKER_ID/nginx:$DOCKER_TAG ./nginx
