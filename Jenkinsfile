@@ -12,7 +12,7 @@ stages {
                 sh '''
                  docker build -t $DOCKER_ID/cast-service:$DOCKER_TAG ./cast-service
                  docker build -t $DOCKER_ID/movie-service:$DOCKER_TAG ./movie-service
-                 docker build -t $DOCKER_ID/nginx:$DOCKER_TAG ./nginx-service
+                 docker build -t $DOCKER_ID/nginx:$DOCKER_TAG ./nginx
                 sleep 6
                 '''
                 }
@@ -24,7 +24,7 @@ stages {
                     sh '''
                     docker run -d -p 8081:8000 --name cast-service $DOCKER_ID/cast-service:$DOCKER_TAG
                     docker run -d -p 8082:8000 --name movie-service $DOCKER_ID/movie-service:$DOCKER_TAG
-                    docker run -d -p 8080:8080 --name nginx-service $DOCKER_ID/nginx-service:$DOCKER_TAG
+                    docker run -d -p 8080:8080 --name nginx $DOCKER_ID/nginx:$DOCKER_TAG
                     sleep 10
                     '''
                     }
@@ -56,7 +56,7 @@ stages {
                 docker login -u $DOCKER_ID -p $DOCKER_PASS
                 docker push $DOCKER_ID/cast-service:$DOCKER_TAG
                 docker push $DOCKER_ID/movie-service:$DOCKER_TAG
-                docker push $DOCKER_ID/nginx-service:$DOCKER_TAG
+                docker push $DOCKER_ID/nginx:$DOCKER_TAG
                 '''
                 }
             }
@@ -75,7 +75,7 @@ stage('Deploiement en dev'){
                 mkdir .kube  
                 cat $KUBECONFIG > .kube/config
                 helm upgrade --install cast-app charts/ --values=cast-service/values.yml --namespace dev --set image.repository="$DOCKER_ID/cast-service:$DOCKER_TAG"
-                helm upgrade --install cast-app charts/ --values=movie-service/values.yml --namespace dev --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
+                helm upgrade --install movie-app charts/ --values=movie-service/values.yml --namespace dev --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
                 helm upgrade --install nginx-app charts/ --values=nginx/values.yml --namespace dev --set image.repository="$DOCKER_ID/nginx-service:$DOCKER_TAG"
 
                 '''
@@ -95,7 +95,7 @@ stage('Deploiement en staging'){
                 mkdir .kube
                 cat $KUBECONFIG > .kube/config
                 helm upgrade --install cast-app charts/ --values=cast-service/values.yml --namespace staging --set image.repository="$DOCKER_ID/cast-service:$DOCKER_TAG"
-                helm upgrade --install cast-app charts/ --values=movie-service/values.yml --namespace staging --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
+                helm upgrade --install movie-app charts/ --values=movie-service/values.yml --namespace staging --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
                 helm upgrade --install nginx-app charts/ --values=nginx/values.yml --namespace staging --set image.repository="$DOCKER_ID/nginx-service:$DOCKER_TAG"
                 '''
                 }
@@ -120,7 +120,7 @@ stage('Deploiement en staging'){
                 mkdir .kube
                 cat $KUBECONFIG > .kube/config
                 helm upgrade --install cast-app charts/ --values=cast-service/values.yml --namespace prod --set image.repository="$DOCKER_ID/cast-service:$DOCKER_TAG"
-                helm upgrade --install cast-app charts/ --values=movie-service/values.yml --namespace prod --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
+                helm upgrade --install movie-app charts/ --values=movie-service/values.yml --namespace prod --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
                 helm upgrade --install nginx-app charts/ --values=nginx/values.yml --namespace prod --set image.repository="$DOCKER_ID/nginx-service:$DOCKER_TAG"
                 '''
                 }
