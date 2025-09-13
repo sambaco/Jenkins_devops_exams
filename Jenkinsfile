@@ -25,9 +25,9 @@ stages {
                 steps {
                     script {
                     sh '''
-                    docker run -d -p 8081:8000 --name cast-service $DOCKER_ID/cast-service:$DOCKER_TAG
-                    docker run -d -p 8082:8000 --name movie-service $DOCKER_ID/movie-service:$DOCKER_TAG
-                    docker run -d -p 8083:8083 --name nginx $DOCKER_ID/nginx:$DOCKER_TAG
+                    docker run -d -p 8081:8080 --name cast-service $DOCKER_ID/cast-service:$DOCKER_TAG
+                    docker run -d -p 8082:8080 --name movie-service $DOCKER_ID/movie-service:$DOCKER_TAG
+                    docker run -d -p 8083:8080 --name nginx $DOCKER_ID/nginx:$DOCKER_TAG
                     sleep 10
                     '''
                     }
