@@ -5,7 +5,7 @@ metadata:
   labels:
     app: {{.Values.appName}}
 spec:
-  type: nodePort
+  type: NodePort
   ports:
     - port: {{ .Values.service.port }}
       targetPort: http
