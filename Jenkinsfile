@@ -55,7 +55,7 @@ stage('Deploiement en dev'){
                 cat $KUBECONFIG > .kube/config
                 helm upgrade --install cast-app charts/ --values=cast-service/values.yaml --namespace dev --set image.repository="$DOCKER_ID/cast-service:$DOCKER_TAG"
                 helm upgrade --install movie-app charts/ --values=movie-service/values.yaml --namespace dev --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
-                helm upgrade --install nginx-app charts/ --values=nginx/values.yaml --namespace dev --set image.repository="$DOCKER_ID/nginx-service:$DOCKER_TAG"
+                helm upgrade --install nginx-app charts/ --values=nginx/values.yaml --namespace dev --set image.repository="$DOCKER_ID/nginx:$DOCKER_TAG"
 
                 '''
                 }
@@ -75,7 +75,7 @@ stage('Deploiement en staging'){
                 cat $KUBECONFIG > .kube/config
                 helm upgrade --install cast-app charts/ --values=cast-service/values.yaml --namespace staging --set image.repository="$DOCKER_ID/cast-service:$DOCKER_TAG"
                 helm upgrade --install movie-app charts/ --values=movie-service/values.yaml --namespace staging --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
-                helm upgrade --install nginx-app charts/ --values=nginx/values.yaml --namespace staging --set image.repository="$DOCKER_ID/nginx-service:$DOCKER_TAG"
+                helm upgrade --install nginx-app charts/ --values=nginx/values.yaml --namespace staging --set image.repository="$DOCKER_ID/nginx:$DOCKER_TAG"
                 '''
                 }
             }
@@ -100,7 +100,7 @@ stage('Deploiement en staging'){
                 cat $KUBECONFIG > .kube/config
                 helm upgrade --install cast-app charts/ --values=cast-service/values.yaml --namespace prod --set image.repository="$DOCKER_ID/cast-service:$DOCKER_TAG"
                 helm upgrade --install movie-app charts/ --values=movie-service/values.yaml --namespace prod --set image.repository="$DOCKER_ID/movie-service:$DOCKER_TAG"
-                helm upgrade --install nginx-app charts/ --values=nginx/values.yaml --namespace prod --set image.repository="$DOCKER_ID/nginx-service:$DOCKER_TAG"
+                helm upgrade --install nginx-app charts/ --values=nginx/values.yaml --namespace prod --set image.repository="$DOCKER_ID/nginx:$DOCKER_TAG"
                 '''
                 }
             }
